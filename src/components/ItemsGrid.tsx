@@ -36,10 +36,8 @@ export function ItemsGrid<T extends GridValidRowModel>({
       getRowHeight={() => 40}
       onRowClick={handleRowClick}
       sx={{
-        cursor: 'pointer',
-        '& .MuiDataGrid-virtualScroller': {
-          overflowY: 'scroll',
-          scrollbarGutter: 'stable',
+        '& .MuiDataGrid-row': {
+          cursor: 'pointer',
         },
       }}
       rowSelectionModel={selectionModel}
