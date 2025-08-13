@@ -25,10 +25,10 @@ export function ScheduledItemsGrid({ rows, onSubmit }: Props) {
 
   const columns: GridColDef<Item>[] = useMemo(
     () => [
-      { field: "id", headerName: "ID", flex: 1 },
-      { field: "name", headerName: "Name", flex: 2 },
-      { field: "createdAtUtc", headerName: "Created", flex: 2, valueFormatter },
-      { field: "scheduledForUtc", headerName: "Scheduled For", flex: 2, valueFormatter },
+      { field: "id", headerName: "ID", flex: 0.5 },
+      { field: "name", headerName: "Name", flex: 1.5 },
+      { field: "createdAtUtc", headerName: "Created", flex: 1.5, valueFormatter },
+      { field: "scheduledForUtc", headerName: "Scheduled For", flex: 1.5, valueFormatter },
     ],
     [valueFormatter]
   );
