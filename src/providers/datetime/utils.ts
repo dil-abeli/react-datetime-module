@@ -33,3 +33,17 @@ export function parseOrgInputToUtcIso(
 }
 
 
+// Generic helpers for arbitrary timezones
+export function utcIsoToTimezoneDateTime(utcIso: string, timezone: string): DateTime {
+  return DateTime.fromISO(utcIso, { zone: 'utc' }).setZone(timezone)
+}
+
+export function formatUtcForTimezone(
+  utcIso: string,
+  timezone: string,
+  format: string,
+): string {
+  return utcIsoToTimezoneDateTime(utcIso, timezone).toFormat(format)
+}
+
+

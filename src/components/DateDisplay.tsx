@@ -1,66 +1,70 @@
-import { Tooltip, Typography, Stack, useTheme } from "@mui/material";
+import { Tooltip, Typography, Stack } from "@mui/material";
+import { useMemo } from "react";
 import { DateTime } from "luxon";
 import { useDateTimeConfig } from "../providers/datetime/hooks";
 
 type DateDisplayProps = Readonly<{
   utcIso?: string | null;
   format?: string;
-  timezones?: readonly string[];
-  labelMap?: Readonly<Record<string, string>>;
-  placement?: "bottom-end" | "bottom-start" | "bottom" | "left-end" | "left-start" | "left" | "right-end" | "right-start" | "right" | "top-end" | "top-start" | "top";
   emptyText?: string;
 }>;
 
-function formatForTimezone(utcIso: string, tz: string, format: string): string {
-  return DateTime.fromISO(utcIso, { zone: "utc" }).setZone(tz).toFormat(format);
-}
 
 export function DateDisplay({
   utcIso,
   format,
-  timezones,
-  labelMap,
-  placement = "top",
-  emptyText = "-",
+  emptyText = "—",
 }: DateDisplayProps) {
-  const theme = useTheme();
   const { orgTimezone, userTimezone, userDateFormat, ready } = useDateTimeConfig();
-
-  if (!utcIso || !ready) return <span>{emptyText}</span>;
 
   const displayFormat = format ?? userDateFormat;
 
-  const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const tzCandidates: string[] = [
-    userTimezone,
-    orgTimezone,
-    "UTC",
-    browserTimezone,
-    ...(timezones ?? []),
-  ];
-  const tzs: string[] = Array.from(new Set(tzCandidates.filter((v) => v)));
+  const tzRows = useMemo(
+    () => [
+      { tz: orgTimezone, label: `Org (${orgTimezone})` },
+      { tz: userTimezone, label: `User (${userTimezone})` },
+      { tz: "UTC", label: "UTC" },
+    ],
+    [orgTimezone, userTimezone],
+  );
+
+  const baseUtc = useMemo(() => (utcIso ? DateTime.fromISO(utcIso, { zone: "utc" }) : null), [utcIso]);
+
+  if (!utcIso || !ready) return <span>{emptyText}</span>;
 
   const tooltipContent = (
-    <Stack spacing={0.5} sx={{ minWidth: 220 }}>
-      {tzs.map((tz) => {
-        const label = labelMap?.[tz] ?? tz;
-        const value = formatForTimezone(utcIso, tz, displayFormat);
+    <Stack spacing={0.5}>
+      {tzRows.map(({ tz, label }) => {
+        const isActive = tz === orgTimezone;
+        const value = baseUtc!.setZone(tz).toFormat(displayFormat);
         return (
-          <Stack key={tz} direction="row" justifyContent="space-between" gap={1}>
-            <Typography variant="caption" color="text.light">{label}</Typography>
-            <Typography variant="caption">{value}</Typography>
+          <Stack key={tz} direction="row" justifyContent="space-between" gap={2}>
+            <Stack sx={{ minWidth: 150 }}>
+              <Typography variant="labelSm" fontWeight={isActive ? 800 : 400}>
+                {label}
+              </Typography>
+            </Stack>
+            <Stack alignItems="flex-end">
+              <Typography variant="labelSm" fontWeight={isActive ? 800 : 400}>
+                {value}
+              </Typography>
+            </Stack>
           </Stack>
         );
       })}
     </Stack>
   );
 
-  const atlasTooltipPreset: Record<string, unknown> = (theme as any)?.presets?.TooltipPresets?.type?.dark ?? {};
-
-  const displayText = formatForTimezone(utcIso, orgTimezone, displayFormat);
+  const displayText = baseUtc!.setZone(orgTimezone).toFormat(displayFormat);
 
   return (
-    <Tooltip placement={placement} title={tooltipContent} {...atlasTooltipPreset}>
+    <Tooltip
+      placement="top"
+      title={tooltipContent}
+      enterDelay={1000}
+      enterNextDelay={1000}
+      slotProps={{ tooltip: { sx: { maxWidth: 'none' } } }}
+    >
       <span>{displayText}</span>
     </Tooltip>
   );

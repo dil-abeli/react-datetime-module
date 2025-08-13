@@ -42,7 +42,7 @@ export function ScheduledItemsGrid({ rows, onSubmit }: Props) {
 
   return (
     <>
-      <Box sx={{ height: 600 }}>
+      <Box sx={{ height: "80vh", width: "100%" }}>
         <ItemsGrid<Item>
           rows={rows}
           columns={columns}
