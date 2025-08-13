@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@diligentcorp/atlas-theme-mui": "^0.26.16",
+    "@diligentcorp/atlas-theme-mui-data-grid": "^1.2.20",
+    "@diligentcorp/atlas-theme-mui-date-pickers": "^1.2.20",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.6",

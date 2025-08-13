@@ -31,6 +31,17 @@ export const useItemsStore = create<ItemsState>()(
         }
       },
     }),
-    { name: 'items-store' },
+    {
+      name: 'items-store',
+      version: 2,
+      migrate: (persistedState: unknown, version) => {
+        // Drop any previously persisted items to reseed with the new 50-item dataset
+        if (version < 2) {
+          const state = (persistedState as Partial<ItemsState>) ?? {}
+          return { ...state, items: [] } as ItemsState
+        }
+        return (persistedState as ItemsState)
+      },
+    },
   ),
 )

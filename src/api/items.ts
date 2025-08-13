@@ -1,15 +1,32 @@
 import { useItemsStore, type Item } from '../store/itemsStore'
 
+function toUtcIsoNoMs(d: Date): string {
+  return d.toISOString().replace('.000Z', 'Z')
+}
+
 function seedIfEmpty() {
   const { items, setItems } = useItemsStore.getState()
   if (items.length === 0) {
-    setItems([
-      { id: '1', name: 'Alpha', createdAtUtc: '2025-08-10T09:30:00Z', scheduledForUtc: '2025-08-15T13:00:00Z' },
-      { id: '2', name: 'Beta', createdAtUtc: '2025-08-11T18:45:00Z', scheduledForUtc: '2025-08-16T08:15:00Z' },
-      { id: '3', name: 'Gamma', createdAtUtc: '2025-08-12T22:10:00Z', scheduledForUtc: '2025-08-17T17:30:00Z' },
-      { id: '4', name: 'Delta', createdAtUtc: '2025-08-13T05:05:00Z', scheduledForUtc: '2025-08-18T21:45:00Z' },
-      { id: '5', name: 'Epsilon', createdAtUtc: '2025-08-14T12:00:00Z', scheduledForUtc: '2025-08-19T10:00:00Z' },
-    ])
+    const start = Date.UTC(2025, 7, 10, 9, 30) // 2025-08-10T09:30:00Z
+    const generated: Item[] = Array.from({ length: 50 }, (_, i) => {
+      const id = String(i + 1)
+      const createdDate = new Date(
+        start +
+          i * 24 * 60 * 60 * 1000 + // +i days
+          (i % 5) * 60 * 60 * 1000 + // +0..4 hours for variety
+          ((i * 15) % 60) * 60 * 1000, // +0..59 minutes stepping by 15
+      )
+      const scheduledDate = new Date(
+        createdDate.getTime() + 5 * 24 * 60 * 60 * 1000 + 90 * 60 * 1000, // +5 days + 1h30m
+      )
+      return {
+        id,
+        name: `Item ${id}`,
+        createdAtUtc: toUtcIsoNoMs(createdDate),
+        scheduledForUtc: toUtcIsoNoMs(scheduledDate),
+      }
+    })
+    setItems(generated)
   }
 }
 

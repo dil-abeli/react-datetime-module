@@ -68,9 +68,7 @@ export function ItemEditor({
           disabled={disabled}
           slotProps={{ textField: { helperText } }}
         />
-        <Typography variant="caption">
-          Submit serializes to UTC ISO for persistence.
-        </Typography>
+        <Typography variant="caption">Submit serializes to UTC ISO for persistence.</Typography>
       </Stack>
     </Box>
   );

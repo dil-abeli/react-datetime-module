@@ -19,8 +19,8 @@ export function ItemsGrid<T extends GridValidRowModel>({
   onRowClick,
   selectionModel,
   onSelectionModelChange,
-  pageSizeOptions = [5],
-  defaultPageSize = 5,
+  pageSizeOptions = [25, 50, 100],
+  defaultPageSize = 25,
 }: Props<T>) {
   const handleRowClick = (params: GridRowParams<T>) => {
     onRowClick?.(params.row)
