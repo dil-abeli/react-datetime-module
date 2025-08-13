@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
-import { useDateTimeConfig } from './hooks';
-import { formatUtcForDisplay, utcIsoToOrgDateTime, orgDateTimeToUtcIso } from './utils';
+import { useDateTimeConfig, useDateTimeService } from './hooks';
 import type { DateTime } from 'luxon';
 
 export function useDateTimeTools() {
-  const { orgTimezone, userDateFormat, ready } = useDateTimeConfig();
+  const { ready } = useDateTimeConfig();
+  const service = useDateTimeService();
 
   const formatUtcInOrgTz = useCallback(
-    (utcIso: string) => (ready ? formatUtcForDisplay(utcIso, orgTimezone, userDateFormat) : ""),
-    [orgTimezone, userDateFormat, ready]
+    (utcIso: string) => (ready ? service.formatUtc(utcIso) : ""),
+    [service, ready]
   );
   const toOrgTz = useCallback(
-    (utcIso: string) => utcIsoToOrgDateTime(utcIso, orgTimezone),
-    [orgTimezone]
+    (utcIso: string) => service.toOrg(utcIso),
+    [service]
   );
-  const orgTzToUtcIso = useCallback((dt: DateTime) => orgDateTimeToUtcIso(dt), []);
+  const orgTzToUtcIso = useCallback((dt: DateTime) => service.toUtcIso(dt), [service]);
 
   return { formatUtcInOrgTz, toOrgTz, orgTzToUtcIso };
 }

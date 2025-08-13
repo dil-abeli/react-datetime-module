@@ -1,7 +1,7 @@
 import { Tooltip, Typography, Stack } from "@mui/material";
 import { useMemo } from "react";
 import { DateTime } from "luxon";
-import { useDateTimeConfig } from "../providers/datetime/hooks";
+import { useDateTimeConfig, useDateTimeService } from "../providers/datetime/hooks";
 
 type DateDisplayProps = Readonly<{
   utcIso?: string | null;
@@ -16,6 +16,7 @@ export function DateDisplay({
   emptyText = "—",
 }: DateDisplayProps) {
   const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, ready } = useDateTimeConfig();
+  const dtService = useDateTimeService();
 
   const displayFormat = format ?? `${userDateFormat} ${userTimeFormat === '24h' ? 'HH:mm' : 'hh:mm a'}`;
 
@@ -55,7 +56,7 @@ export function DateDisplay({
     </Stack>
   );
 
-  const displayText = baseUtc!.setZone(orgTimezone).toFormat(displayFormat);
+  const displayText = dtService.formatUtc(utcIso, displayFormat);
 
   return (
     <Tooltip

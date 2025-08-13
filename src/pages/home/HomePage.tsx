@@ -13,7 +13,7 @@ export function HomePage() {
       <Typography variant="h6" gutterBottom>
         Welcome fellow developer! 😊
       </Typography>
-      <Typography variant="body2">
+      <Typography variant="body1">
         This app demonstrates a centralized date/time provider that can be used to display and edit dates and times in a consistent way across the application.
       </Typography>
       <Snackbar
