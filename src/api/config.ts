@@ -8,8 +8,8 @@ function delay(ms: number) {
 
 export async function fetchTimeConfig(): Promise<TimeConfig> {
   await delay(200)
-  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat } = useSettingsStore.getState()
-  return { orgTimezone, userTimezone, userDateFormat, userTimeFormat }
+  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, defaultDisplayTz } = useSettingsStore.getState()
+  return { orgTimezone, userTimezone, userDateFormat, userTimeFormat, defaultDisplayTz }
 }
 
 export async function fetchOrgTimezone(): Promise<string> {
@@ -26,8 +26,8 @@ export async function fetchUserPrefs(): Promise<{ timezone: string; dateFormat: 
 export async function updateTimeConfig(next: Partial<TimeConfig>): Promise<TimeConfig> {
   await delay(200)
   useSettingsStore.getState().updateConfig(next)
-  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat } = useSettingsStore.getState()
-  return { orgTimezone, userTimezone, userDateFormat, userTimeFormat }
+  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, defaultDisplayTz } = useSettingsStore.getState()
+  return { orgTimezone, userTimezone, userDateFormat, userTimeFormat, defaultDisplayTz }
 }
 
 

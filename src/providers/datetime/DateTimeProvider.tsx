@@ -18,6 +18,7 @@ export function DateTimeProvider({ config, ready, children }: Readonly<DateTimeP
       userTimezone: (config?.userTimezone ?? 'UTC'),
       userDateFormat: (config?.userDateFormat ?? 'yyyy/MM/dd'),
       userTimeFormat: (config?.userTimeFormat ?? '24h'),
+      defaultDisplayTz: config?.defaultDisplayTz ?? 'org',
       ready,
     }),
     [config, ready],
@@ -30,8 +31,9 @@ export function DateTimeProvider({ config, ready, children }: Readonly<DateTimeP
         userTimezone: value.userTimezone,
         userDateFormat: value.userDateFormat,
         userTimeFormat: value.userTimeFormat,
+        defaultDisplayTz: value.defaultDisplayTz,
       }),
-    [value.orgTimezone, value.userTimezone, value.userDateFormat, value.userTimeFormat],
+    [value.orgTimezone, value.userTimezone, value.userDateFormat, value.userTimeFormat, value.defaultDisplayTz],
   )
 
   return (

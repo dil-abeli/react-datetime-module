@@ -15,6 +15,7 @@ export const useSettingsStore = create<SettingsState>()(
       userTimezone: 'America/New_York',
       userDateFormat: 'yyyy/MM/dd' as UserDateFormat,
       userTimeFormat: '24h' as UserTimeFormat,
+      defaultDisplayTz: 'org',
       setConfig: (config) => set({ ...config }),
       updateConfig: (partial) => set({ ...get(), ...partial }),
     }),

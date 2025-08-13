@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { TIME_FORMAT_PATTERN } from '../../providers/datetime/constants'
-import type { UserDateFormat, UserTimeFormat } from '../../providers/datetime/constants'
+import type { UserDateFormat, UserTimeFormat, DefaultDisplayTz } from '../../providers/datetime/constants'
 
 export type DateTimeServiceConfig = {
   orgTimezone: string
@@ -8,6 +8,7 @@ export type DateTimeServiceConfig = {
   userDateFormat: UserDateFormat
   userTimeFormat: UserTimeFormat
   now?: () => Date
+  defaultDisplayTz?: DefaultDisplayTz
 }
 
 export interface DateTimeService {
@@ -46,7 +47,8 @@ export function createDateTimeService(initialConfig: DateTimeServiceConfig): Dat
 
   function formatUtc(utcIso: string, fmt?: string): string {
     const format = fmt ?? buildDefaultFormat(config.userDateFormat, config.userTimeFormat)
-    return DateTime.fromISO(utcIso, { zone: 'utc' }).setZone(config.orgTimezone).toFormat(format)
+    const tz = config.defaultDisplayTz === 'user' ? config.userTimezone : config.orgTimezone
+    return DateTime.fromISO(utcIso, { zone: 'utc' }).setZone(tz).toFormat(format)
   }
 
   function formatRange(startUtcIso: string, endUtcIso: string, style: 'short' | 'long' = 'long'): string {

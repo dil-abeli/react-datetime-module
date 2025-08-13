@@ -15,7 +15,7 @@ export function DateDisplay({
   format,
   emptyText = "—",
 }: DateDisplayProps) {
-  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, ready } = useDateTimeConfig();
+  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, defaultDisplayTz, ready } = useDateTimeConfig();
   const dtService = useDateTimeService();
 
   const displayFormat = format ?? `${userDateFormat} ${userTimeFormat === '24h' ? 'HH:mm' : 'hh:mm a'}`;
@@ -36,7 +36,8 @@ export function DateDisplay({
   const tooltipContent = (
     <Stack spacing={0.5}>
       {tzRows.map(({ tz, label }) => {
-        const isActive = tz === orgTimezone;
+        const activeTz = defaultDisplayTz === 'user' ? userTimezone : orgTimezone;
+        const isActive = tz === activeTz;
         const value = baseUtc!.setZone(tz).toFormat(displayFormat);
         return (
           <Stack key={`${label}|${tz}`} direction="row" justifyContent="space-between" gap={2}>

@@ -14,6 +14,8 @@ export const TIME_FORMAT_PATTERN: Record<UserTimeFormat, string> = {
   '24h': 'HH:mm',
 }
 
+export type DefaultDisplayTz = 'org' | 'user'
+
 export function isUserDateFormat(value: string): value is UserDateFormat {
   return (USER_DATE_FORMATS as readonly string[]).includes(value)
 }

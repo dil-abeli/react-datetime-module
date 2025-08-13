@@ -14,6 +14,7 @@ export function SettingsPage() {
   const [userTz, setUserTz] = useState(config?.userTimezone ?? 'UTC')
   const [dateFormat, setDateFormat] = useState(config?.userDateFormat ?? 'yyyy/MM/dd')
   const [timeFormat, setTimeFormat] = useState(config?.userTimeFormat ?? '24h')
+  const [defaultDisplayTz, setDefaultDisplayTz] = useState<'org' | 'user'>(config?.defaultDisplayTz ?? 'org')
 
   const tzOptions = useMemo(
     () => ['UTC', 'Europe/Budapest', 'America/New_York', 'Europe/London', 'Asia/Tokyo'],
@@ -26,6 +27,7 @@ export function SettingsPage() {
       userTimezone: userTz,
       userDateFormat: dateFormat,
       userTimeFormat: timeFormat,
+      defaultDisplayTz,
     })
   }
 
@@ -59,6 +61,15 @@ export function SettingsPage() {
                 {tz}
               </MenuItem>
             ))}
+          </TextField>
+          <TextField
+            select
+            label="Default Display Timezone"
+            value={defaultDisplayTz}
+            onChange={(e) => setDefaultDisplayTz(e.target.value as 'org' | 'user')}
+          >
+            <MenuItem value="org">Organization</MenuItem>
+            <MenuItem value="user">User</MenuItem>
           </TextField>
           <TextField
             select
