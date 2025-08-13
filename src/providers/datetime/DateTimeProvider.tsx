@@ -15,7 +15,8 @@ export function DateTimeProvider({ config, ready, children }: Readonly<DateTimeP
     () => ({
       orgTimezone: config?.orgTimezone ?? 'UTC',
       userTimezone: config?.userTimezone ?? 'UTC',
-      userDateFormat: config?.userDateFormat ?? "yyyy-LL-dd'T'HH:mm",
+      userDateFormat: config?.userDateFormat ?? 'yyyy/MM/dd',
+      userTimeFormat: config?.userTimeFormat ?? '24h',
       ready,
     }),
     [config, ready],

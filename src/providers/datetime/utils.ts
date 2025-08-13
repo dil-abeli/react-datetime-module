@@ -1,9 +1,12 @@
 import { DateTime } from 'luxon'
 
+import type { UserDateFormat, UserTimeFormat } from './constants'
+
 export type TimeConfig = {
   orgTimezone: string
   userTimezone: string
-  userDateFormat: string
+  userDateFormat: UserDateFormat
+  userTimeFormat: UserTimeFormat
 }
 
 export function utcIsoToOrgDateTime(utcIso: string, orgTimezone: string): DateTime {

@@ -15,9 +15,9 @@ export function DateDisplay({
   format,
   emptyText = "—",
 }: DateDisplayProps) {
-  const { orgTimezone, userTimezone, userDateFormat, ready } = useDateTimeConfig();
+  const { orgTimezone, userTimezone, userDateFormat, userTimeFormat, ready } = useDateTimeConfig();
 
-  const displayFormat = format ?? userDateFormat;
+  const displayFormat = format ?? `${userDateFormat} ${userTimeFormat === '24h' ? 'HH:mm' : 'hh:mm a'}`;
 
   const tzRows = useMemo(
     () => [
@@ -38,7 +38,7 @@ export function DateDisplay({
         const isActive = tz === orgTimezone;
         const value = baseUtc!.setZone(tz).toFormat(displayFormat);
         return (
-          <Stack key={tz} direction="row" justifyContent="space-between" gap={2}>
+          <Stack key={`${label}|${tz}`} direction="row" justifyContent="space-between" gap={2}>
             <Stack sx={{ minWidth: 150 }}>
               <Typography variant="labelSm" fontWeight={isActive ? 800 : 400}>
                 {label}
