@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 export function AppBar() {
   return (
     <MuiAppBar position="static" color="default" elevation={0}>
-      <Toolbar>
+      <Toolbar sx={{ gap: 2 }}>
         <Typography
           component={RouterLink}
           to="/"
@@ -30,6 +30,14 @@ export function AppBar() {
           disableTouchRipple
         >
           Scheduled Items
+        </MuiButton>
+        <MuiButton
+          component={RouterLink}
+          to="/settings"
+          color="inherit"
+          disableTouchRipple
+        >
+          Settings
         </MuiButton>
       </Toolbar>
     </MuiAppBar>
